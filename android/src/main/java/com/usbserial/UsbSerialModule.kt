@@ -44,12 +44,9 @@ class UsbSerialModule(reactContext: ReactApplicationContext) :
 
     private fun usbDeviceToMap(device: UsbDevice): WritableMap {
         val map = Arguments.createMap()
-        map.putString("deviceName", device.deviceName)
         map.putInt("vendorId", device.vendorId)
         map.putInt("productId", device.productId)
         map.putString("manufacturer", device.manufacturerName)
-        map.putString("productName", device.productName)
-        map.putString("serialNumber", device.serialNumber)
         return map
     }
 
