@@ -42,18 +42,12 @@ function DeviceItem({
       disabled={isConnecting}
     >
       <View style={styles.deviceInfo}>
-        <Text style={styles.deviceName}>
-          {device.productName || 'Unknown Device'}
-        </Text>
         <Text style={styles.deviceDetails}>
           {device.manufacturer || 'Unknown Manufacturer'}
         </Text>
         <Text style={styles.deviceIds}>
           VID: {device.vendorId} | PID: {device.productId}
         </Text>
-        {device.serialNumber && (
-          <Text style={styles.serialNumber}>S/N: {device.serialNumber}</Text>
-        )}
       </View>
       <View style={styles.buttonContainer}>
         {isConnecting ? (
@@ -113,7 +107,7 @@ export default function App() {
 
   // Connect to device
   const handleConnectDevice = async (device: UsbDevice) => {
-    if (selectedDevice?.deviceName === device.deviceName) {
+    if (selectedDevice?.productId === device.productId) {
       setIsConnecting(true);
       try {
         await disconnect();
@@ -254,7 +248,7 @@ export default function App() {
               <DeviceItem
                 device={item}
                 onConnect={() => handleConnectDevice(item)}
-                isSelected={selectedDevice?.deviceName === item.deviceName}
+                isSelected={selectedDevice?.productId === item.productId}
                 isConnecting={isConnecting}
               />
             )}
@@ -278,7 +272,7 @@ export default function App() {
                 {isConnectedState ? 'Connected' : 'Disconnected'}
               </Text>
               <Text style={styles.statusDevice}>
-                {selectedDevice.productName}
+                {selectedDevice.productId}
               </Text>
             </View>
           </View>

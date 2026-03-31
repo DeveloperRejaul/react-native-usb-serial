@@ -61,7 +61,32 @@ Add USB permissions to your `AndroidManifest.xml`:
 <uses-permission android:name="android.permission.USB_PERMISSION" />
 <uses-feature android:name="android.hardware.usb.host" />
 ```
+## Setup: Auto-Launch App
 
+To make your app open automatically when the hardware is plugged in:
+
+### 1. Define Device Filter
+Create `res/xml/device_filter.xml`:
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Empty tag matches any USB Serial device -->
+    <usb-device />
+</resources>
+```
+
+### 2. Configure Manifest
+Update your `MainActivity` in `AndroidManifest.xml`:
+```xml
+<activity android:name=".MainActivity" android:exported="true">
+    <intent-filter>
+        <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+    </intent-filter>
+    <meta-data 
+        android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+        android:resource="@xml/device_filter" />
+</activity>
+```
 ## Quick Start
 
 ### Basic Device Enumeration
@@ -76,9 +101,9 @@ import {
 const devices: UsbDevice[] = getDeviceList();
 
 devices.forEach(device => {
-  console.log(`Device: ${device.productName}`);
   console.log(`Vendor ID: ${device.vendorId}`);
   console.log(`Product ID: ${device.productId}`);
+  console.log(`Manufacturer: ${device.manufacturer}`);
 });
 ```
 
@@ -127,8 +152,8 @@ import {
   onReadInterval,
   offReadInterval,
   type RawReadConfig,
-  NativeEventEmitter,
 } from '@rejaul/react-native-usb-serial';
+import {NativeEventEmitter} from 'react-native';
 
 // Configure reading parameters
 const readConfig: RawReadConfig = {
@@ -200,7 +225,7 @@ async function readSerialData(): Promise<void> {
 
 ## Advanced Usage
 
-### Soil Sensor Integration
+### Soil Sensor Integration 8-in-1 (Modbus RTU)
 
 ```typescript
 import {
@@ -209,8 +234,8 @@ import {
   offReadSoilDataInterval,
   type SoilSensorConfig,
   type SoilData,
-  NativeEventEmitter,
 } from '@rejaul/react-native-usb-serial';
+import {NativeEventEmitter} from 'react-native';
 
 // Configure modbus soil sensor
 const soilConfig: SoilSensorConfig = {
@@ -311,12 +336,9 @@ async function safeConnect(device: UsbDevice): Promise<void> {
 
 ```typescript
 type UsbDevice = {
-  deviceName: string;
   vendorId: number;
   productId: number;
   manufacturer?: string | null;
-  productName?: string | null;
-  serialNumber?: string | null;
 };
 ```
 

@@ -88,7 +88,7 @@ export default function DeviceManagementExample() {
         }));
         Alert.alert(
           'Success',
-          `Connected to ${device.productName || 'Unknown Device'}`
+          `Connected to ${device.productId || 'Unknown Device'}`
         );
       } else {
         throw new Error('Failed to establish connection');
@@ -146,7 +146,7 @@ export default function DeviceManagementExample() {
       <View style={[styles.deviceCard, isConnected && styles.connectedCard]}>
         <View style={styles.deviceInfo}>
           <Text style={styles.deviceName}>
-            {item.productName || 'Unknown Device'}
+            {item.productId || 'Unknown Device'}
           </Text>
           <Text style={styles.deviceMeta}>
             {item.manufacturer || 'Unknown Manufacturer'}
@@ -154,9 +154,6 @@ export default function DeviceManagementExample() {
           <Text style={styles.deviceIds}>
             VID: {item.vendorId} | PID: {item.productId}
           </Text>
-          {item.serialNumber && (
-            <Text style={styles.serialNumber}>S/N: {item.serialNumber}</Text>
-          )}
         </View>
 
         <TouchableOpacity

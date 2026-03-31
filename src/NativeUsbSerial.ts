@@ -1,12 +1,9 @@
 import { TurboModuleRegistry, type TurboModule , Platform} from 'react-native';
 
 export type UsbDevice = {
-  deviceName: string;
   vendorId: number;
   productId: number;
-  manufacturer?: string | null;
-  productName?: string | null;
-  serialNumber?: string | null;
+  manufacturer: string;
 };
 
 export type SoilData = {

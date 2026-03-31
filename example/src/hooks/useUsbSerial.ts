@@ -95,7 +95,7 @@ export function useUsbSerial(): UseUsbSerialReturn {
         if (connected) {
           setSelectedDevice(device);
           setIsConnectedState(true);
-          console.log(`[USB] Connected to ${device.productName} (${device.vendorId}:${device.productId})`);
+          console.log(`[USB] Connected to (${device.vendorId}:${device.productId})`);
         } else {
           setError('Failed to connect to device');
         }
