@@ -65,5 +65,5 @@ android {
 
 dependencies {
   implementation "com.facebook.react:react-android"
-  implementation("com.github.DeveloperRejaul:usb-serial:v0.0.3")
+  implementation("com.github.DeveloperRejaul:android-usb-serial:v0.0.4")
 }

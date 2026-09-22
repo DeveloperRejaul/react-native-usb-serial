@@ -13,6 +13,34 @@ export function getDeviceList(): UsbDevice[] {
 }
 
 /**
+ * Whether this device's hardware supports USB host mode (OTG) at all - a
+ * permanent capability, not a runtime toggle. False means no wired USB
+ * sensor can ever be used on this device, regardless of cable or settings.
+ */
+export function isOtgSupported(): boolean {
+  return UsbSerial.isOtgSupported();
+}
+
+/**
+ * Starts listening for any USB device (not just this app's sensor) being
+ * physically attached or detached. Android has no public API to read an
+ * OEM's OTG on/off toggle - an attach event actually firing is the closest
+ * available signal that OTG power is reaching the port right now. Subscribe
+ * to 'USB_DEVICE_ATTACHED' / 'USB_DEVICE_DETACHED' via DeviceEventEmitter
+ * before calling this.
+ */
+export function onUsbAttachChange(): Promise<void> {
+  return UsbSerial.onUsbAttachChange();
+}
+
+/**
+ * Stops the listener started by onUsbAttachChange().
+ */
+export function offUsbAttachChange(): Promise<void> {
+  return UsbSerial.offUsbAttachChange();
+}
+
+/**
  * Check if app has permission for a device
  */
 export function hasPermission(device: UsbDevice): Promise<boolean> {

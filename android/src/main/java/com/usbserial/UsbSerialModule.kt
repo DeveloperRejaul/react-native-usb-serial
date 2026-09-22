@@ -65,6 +65,40 @@ class UsbSerialModule(reactContext: ReactApplicationContext) :
     }
 
     /**
+     * Whether this device's hardware supports USB host mode (OTG) at all.
+     */
+    override fun isOtgSupported(): Boolean {
+        return usbManager.isOtgSupported()
+    }
+
+    /**
+     * Starts listening for any USB device being physically attached or detached.
+     */
+    override fun onUsbAttachChange(promise: Promise) {
+        try {
+            usbManager.onUsbAttachChange(
+                onAttached = { device -> sendEvent("USB_DEVICE_ATTACHED", usbDeviceToMap(device)) },
+                onDetached = { device -> sendEvent("USB_DEVICE_DETACHED", usbDeviceToMap(device)) }
+            )
+            promise.resolve(null)
+        } catch (e: Exception) {
+            promise.reject("ERROR", e.message)
+        }
+    }
+
+    /**
+     * Stops the listener started by onUsbAttachChange().
+     */
+    override fun offUsbAttachChange(promise: Promise) {
+        try {
+            usbManager.offUsbAttachChange()
+            promise.resolve(null)
+        } catch (e: Exception) {
+            promise.reject("ERROR", e.message)
+        }
+    }
+
+    /**
      * Check if app has permission for a specific device
      */
     override fun hasPermission(device: ReadableMap, promise: Promise) {

@@ -34,6 +34,28 @@ export interface Spec extends TurboModule {
   getDeviceList(): UsbDevice[];
 
   /**
+   * Whether this device's hardware supports USB host mode (OTG) at all - a
+   * permanent capability, not a runtime toggle. False means no wired USB
+   * sensor can ever be used on this device, regardless of cable or settings.
+   */
+  isOtgSupported(): boolean;
+
+  /**
+   * Starts listening for ANY USB device being physically attached or
+   * detached, not just this app's sensor - emits 'USB_DEVICE_ATTACHED' /
+   * 'USB_DEVICE_DETACHED' (payload: UsbDevice) via DeviceEventEmitter.
+   * Android has no public API to read an OEM's OTG on/off toggle, so an
+   * attach event actually firing is the closest available signal that OTG
+   * power is reaching the port right now.
+   */
+  onUsbAttachChange(): Promise<void>;
+
+  /**
+   * Stops the listener started by onUsbAttachChange().
+   */
+  offUsbAttachChange(): Promise<void>;
+
+  /**
    * Check if app has permission for a specific device
    */
   hasPermission(device: UsbDevice): Promise<boolean>;
